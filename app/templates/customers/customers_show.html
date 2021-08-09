@@ -1,0 +1,224 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USTC BANK</title>
+    <meta name="author" content="朱秋成">
+    <meta name="description" content="coder">
+    <!-- Open Graph -->
+    <meta property="og:title" content="zqc的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="/">
+    <meta property="og:description" content="coder">
+    <meta property="og:site_name" content="zqc的博客">
+    <link href="/static/icons/logo.svg" rel="icon">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_271755_rdxzzo2kqwk.css">
+    <link rel="stylesheet" href="/static/css/github-markdown.css">
+    <link rel="stylesheet" href="/static/css/prism.css">
+    <link rel="stylesheet" href="/static/css/share.min.css">
+    <link rel="stylesheet" href="/static/css/app.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+
+    <style type="text/css">
+        p:not(.add){
+            width: 200px;
+            height: 20px;
+            margin-top: 20px;
+        }
+        /*p清浮动*/
+        p{
+            /* overflow: hidden; */
+        }
+
+
+
+    </style>
+
+<script src="/static/js/jquery.js"></script>
+
+<script>
+  $(document).ready(function(){
+    $(".btn_cancel_bind").click(function(){
+        account_id = $(this).siblings(".account_id").val();
+        type = $(this).siblings(".account_type").val();
+        customer_id = '{{ customer[0] }}';
+        let account_type;
+        if (type == 0) {
+            account_type = "储蓄账户";
+        } else {
+            account_type = "支票账户";
+        }
+        $.getJSON("{{ url_for('accounts.accounts_cancel_bind') }}",{account_id:account_id, customer_id:customer_id, account_type:account_type},function(json, status, xhr) {
+            alert(json["err_msg"]);
+            location.reload();
+        });
+    });
+  });
+  
+</script>
+</head>
+
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+    <input id="nm-switch" type="hidden" value="true">
+    <div class="visible">
+        <header class="g-header headerDown" style="background-color:
+                transparent; box-shadow: none;">
+            <div class="g-logo" style="background:
+                    url(&quot;/static/icons/logo.svg&quot;) center center / 100%
+                    100% no-repeat;">
+                <a href="/"></a>
+            </div>
+            <i id="menu-toggle" class="iconfont icon-menu"></i>
+            <nav class="g-nav">
+                <ul>
+
+                    <li><a href="/" style="color: rgb(255, 255, 255);">home</a></li>
+                    <li><a href="/tags.html" style="color: rgb(255, 255,
+                                255);">tags</a></li>
+
+                </ul>
+            </nav>
+        </header>
+
+
+        <div class="g-banner home-banner banner-theme-default" data-theme="default" style="">
+            <h2>{{ customer[2] }} 的详情</h2>
+            <h3></h3>
+        </div>
+
+        <main class="g-container home-content">
+            <div class="article-list">
+                {% if row != 0 %}
+                    <article class="article-item">
+                        <section class="post-preview" style="text-align: center;">
+                            <h1 class="post-title">所属账户情况</h2>
+                        </section>
+                    </article>
+                    {% for account in accounts %}
+                    <article class="article-item">
+                        <section class="post-preview" style="text-align: center;">
+                            <a class="post-link" href="/accounts/show_account?ID={{ account[0] }}&type={% if account[2] == 0 %}储蓄账户{% else %}支票账户{% endif %}" title="Github主页"></a>
+                            <h2 class="post-title">{{ account[0] }}</h2>
+                            <h3 class="post-subtitle">{{ account[1] }}</h3>
+                            {% if account[2] == 0 %}
+                                <h4 class="post-subtitle">储蓄账户</h3>
+                            {% else %}
+                                <h4 class="post-subtitle">支票账户</h3>
+                            {% endif %}
+                        </section>
+                        <input type="text" class="account_id" value="{{ account[0] }}" hidden />
+                        <input type="text" class="account_type" value="{{ account[2] }}" hidden />
+                        <input style="width: 100px; height: 25px; float: right; border: hidden; background-color: rgb(63, 137, 236); color: rgb(255, 255, 255);" type="button" class="btn_cancel_bind" value="取消绑定" />
+                    </article>
+                    {% endfor %}
+                {% else %}
+                    <article class="article-item">
+                        <section class="post-preview" style="text-align: center;">
+                            <h2 class="post-title">暂无对应的账户</h2>
+                            <h3 class="post-subtitle"></h3>
+                        </section>
+                    </article>
+                {% endif %}
+
+
+
+            </div>
+
+            <aside class="g-sidebar-wrapper">
+                <div class="g-sidebar">
+                    <section class="author-card">
+                        <div class="avatar">
+                            <img src="/static/img/hero.jpg" alt="">
+                        </div>
+                        <div class="container" style="text-align: left">
+                            <div class="author-name" rel="author">
+                                <p>
+                                    <label for="name">身份证号：</label>
+                                    {{ customer[0] }}
+                                </p>
+                            </div>
+                            <div class="author-name" rel="author">
+                                <p>
+                                    <label for="name">负责员工身份证号：</label>
+                                    {% if customer[1] %} {{ customer[1] }} {% else %} 暂时没有 {% endif %}
+                                </p>
+                            </div>
+                            <div class="author-name" rel="author">
+                                <p>
+                                    <label for="name">姓名：</label>
+                                    {{ customer[2] }}
+                                </p>
+                            </div>
+                            <div class="author-name" rel="author">
+                                <p>
+                                    <label for="name">电话号码：</label>
+                                    {{ customer[3] }}
+                                </p>
+                            </div>
+                            <div class="author-name" rel="author">
+                                <p>
+                                    <label for="name">地址：</label>
+                                    {{ customer[4] }}
+                                </p>
+                            </div>
+                            <div class="author-name" rel="author">
+                                <p>
+                                    <label for="name">联系人姓名：</label>
+                                    {{ customer[5] }}
+                                </p>
+                            </div>
+                            <div class="author-name" rel="author">
+                                <p>
+                                    <label for="name">联系人手机号：</label>
+                                    {{ customer[6] }}
+                                </p>
+                            </div>
+                            <div class="author-name" rel="author">
+                                <p>
+                                    <label for="name">联系人Email：</label>
+                                    {% if customer[7] %} {{ customer[7] }} {% else %} 暂时没有 {% endif %}
+                                </p>
+                            </div>
+                            <div class="author-name" rel="author">
+                                <p>
+                                    <label for="name">联系人地址：</label>
+                                    {{ customer[8] }}
+                                </p>
+                            </div>
+                            
+                            <div class="author-name" rel="author">
+                                <p>
+                                    <label for="name">联系人与客户的关系：</label>
+                                    {{ customer[9] }}
+                                </p>
+                            </div>
+                            <div class="bio">
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </aside>
+
+        </main>
+
+        <footer class="g-footer">
+            <section>USTC © 2021 - 2021
+            </section>
+            <section>Powered by <a href="">USTC BANK</a></section>
+        </footer>
+
+
+        </div>
+        <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+        <script src="/static/js/prism.js"></script>
+        <script src="/static/js/index.min.js"></script>
+
+
+</body>
+
+</html>

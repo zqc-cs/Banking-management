@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>贷款查询</title>
+  <meta content="" name="descriptison">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/img/favicon.png" rel="icon">
+  <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i,900" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendor/icofont/icofont.min.css" rel="stylesheet">
+  <link href="/static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/static/vendor/animate.css/animate.min.css" rel="stylesheet">
+  <link href="/static/vendor/venobox/venobox.css" rel="stylesheet">
+  <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/static/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Mamba - v2.0.1
+  * Template URL: https://bootstrapmade.com/mamba-one-page-bootstrap-template-free/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+
+
+  <style type="text/css">
+    form{
+        width: 425px;
+        margin-left: 425px;
+        font:14px bold Microsoft Yahei;
+    }
+    p:not(.search){
+        width: 425px;
+        height: 42px;
+    }
+    /*p清浮动*/
+    p{
+        overflow: hidden;
+    }
+    label:not(.nlabel){
+        float: left;
+        width: 85px;
+        height: 42px;
+        text-align: right;
+        margin-right: 10px;
+        line-height: 42px;
+        color: rgb(102, 102, 102);
+        font-weight: 700;
+    }
+    input:not(.special){
+        float: left;
+        width: 328px;
+        height: 42px;
+        padding: 11px 10px;
+        border: 1px solid silver;
+    }
+    select:not(.special){
+            float: left;
+            width: 328px;
+            height: 42px;
+            padding: 11px 10px;
+            border: 1px solid silver;
+    }
+    a{
+        text-decoration: none;
+    }
+    .search{
+        width: 425px;
+        height: 50px;
+    }
+    #search{
+        width: 350px;
+        height: 50px;
+        margin-left: 75px;
+        background-color: rgb(63, 137, 236);
+        color: rgb(255, 255, 255);
+        border: none;
+    }
+ 
+
+
+</style>   
+<script src="/static/js/jquery.js"></script>
+
+<script>
+  $(document).ready(function(){
+    $("#show_loans").hide();
+
+    $(".btn_search_all").click(function(){
+      $.getJSON("{{ url_for('.search_loans') }}",{search:"all"},function(json, status, xhr) {
+          show_list(json);
+      });
+    });
+
+    $(".btn_search_someone").click(function(){
+      var loan_id = $("#loan_id").val();
+      var bank_name = $("#bank_name").val();
+      $.getJSON("{{ url_for('.search_loans') }}", {search: "someone", id: loan_id, name: bank_name}, function(json, status, xhr) {
+        show_list(json);
+      });
+	});
+
+	
+  });
+  
+</script>
+
+<script>
+function show_list(json) {
+  	if (json["show_windows"] == true) {
+		alert(json["search_msg"]);
+	}
+	if (json["loans"] != null) {
+		if (json["loans"].length == 0) {
+		} else {
+			html = "";
+			$("#show_loans").show();
+			let loan;
+			let i;
+			i=0;
+			html += "<tr> \
+						<td>银行名</td> \
+						<td>账户号</td> \
+						<td>贷款号</td> \
+						<td>贷款金额</td> \
+                        <td>贷款状态</td> \
+						<td></td> \
+						<td></td> \
+						<td></td> \
+						</tr>";
+			$("#loans_table").empty();
+			for (loan of json["loans"]) {
+				html += "<tr class=\"loans\">";
+				html = html + "<td>"+ loan[0] +"</td>";
+				html = html + "<td>" + loan[1] + "</td>";
+				html = html + "<td class=\"loan_id\">"+ loan[2] +"</td>";
+				html = html + "<td>"+ loan[3] +"</td>";
+                if (loan[4] == 0) {
+                    html = html + "<td>"+ "未开始发放" +"</td>";
+                } else if(loan[4] == 1) {
+                    html = html + "<td>"+ "发放中" +"</td>";
+                } else {
+                    html = html + "<td>"+ "已全部发放" +"</td>";
+                }
+                
+				html = html + "<td style=\"border-color: #0be370\"> \
+						<div class=\"search\" style=\"width: 50px\"> \
+							<form style=\"margin-left: 0px\" method=\"get\" action=\"{{ url_for('.loans_show') }}\"> \
+								<input name=\"ID\" value='" + loan[2] + "' style=\"display: none;\"> \
+                <input name=\"account_id\" value='" + loan[1] + "' style=\"display: none;\"> \
+								<input style=\"width: 50px; background-color: rgb(63, 137, 236); color: rgb(255, 255, 255);\"   type=\"submit\"  value=\"查看\"> \
+							</form> \
+						</div> \
+					</td>";
+				html = html + "<td style=\"border-color: #0be370\"> \
+					<div class=\"search\" style=\"width: 50px\"> \
+						<form style=\"margin-left: 0px\" method=\"post\" action=\"{{ url_for('.loans_offer') }}\"> \
+						<input name=\"ID\" value='" + loan[2] + "' style=\"display: none;\"> \
+						<input style=\"width: 50px; background-color: rgb(63, 137, 236); color: rgb(255, 255, 255);\"   type=\"submit\" name=\"offer\" value=\"发放\"> \
+					</form> \
+					</div> \
+				</td>";
+				html = html + "<td style=\"border-color: #0be370\"> \
+					<div class=\"delete\" style=\"width: 50px\"> \
+						<form style=\"margin-left: 0px\" method=\"post\"> \
+                        <input hidden type=\"text\" id=\"cur_state\" value='" + loan[4] + "' > \
+						<input style=\"width: 50px; background-color: rgb(63, 137, 236); color: rgb(255, 255, 255);\" type=\"button\" class=\"delete_btn\" name=\"delete\" value=\"删除\"> \
+					</form> \
+					</div> \
+				</td> \
+				</tr>";
+				html += "</tr>";
+			}
+			
+			$("#loans_table").append(html);
+			$(".delete_btn").click(function(){
+				if (confirm("确定删除？") == true) {
+					var id = $(this).parents("tr").find(".loan_id").text();
+                    var cur_state = $(this).parent().find("#cur_state").val();
+                    if (cur_state == 1) {
+                        alert("贷款未发放完毕");
+                    } else {
+                        do_delete(id);
+                    }
+				}
+			});
+		}
+	}         
+}
+
+function do_delete(id) {
+	$.getJSON("{{ url_for('.loans_delete') }}",{ID:id},function(json, status, xhr) {
+          err = json["err"];
+		  err_msg = json["err_msg"];
+		  alert(err_msg);
+		  $("#loans_table").empty();
+      });
+}
+</script>
+</head>
+
+<body>
+
+
+  <!-- ======= Header ======= -->
+  <header id="header">
+    <div class="container">
+
+      <div class="logo float-left">
+        <h1 class="text-light"><a href="#"><span>贷款管理系统</span></a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="temp.html"><img src="/static/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav class="nav-menu float-right d-none d-lg-block">
+        <ul>
+          <li><a href="/">首页</a></li>
+          <li><a href="/customers">客户管理</a></li>
+          <li><a href="/accounts">账户管理</a></li>
+          <li><a href="/loans">贷款管理</a></li>
+          <li><a href="/works">业务统计</a></li>
+        </ul>
+      </nav><!-- .nav-menu -->
+
+  </header><!-- End Header -->
+
+   <!-- ======= Our Team Section ======= -->
+    <section id="team" class="team">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>查询、修改、删除贷款</h2>
+        </div>
+		
+        <div class="row">
+
+        </div>
+
+      </div>
+      </section>
+ <!-- ======= Counts Section ======= -->
+<section class="counts section-bg">
+    <div class="container">
+        <div data-aos="fade-up">
+          	<!-- <div style=" margin-left: 425px;font:14px bold Microsoft Yahei;"> -->
+            	<p>
+					<label for="name">贷款号</label>
+					<input type="text" id="loan_id" name="ID" placeholder="请输入贷款号" autocomplete="off" />
+            	</p>
+            	<p>
+					<label for="name">支行名</label>
+					<select id="bank_name">
+						<option value="USTC WEST">USTC WEST</option>
+						<option value="USTC EAST">USTC EAST</option>
+						<option value="USTC MIDDLE">USTC MIDDLE</option>
+					</select>
+            	</p>
+				<p class="search">
+					<input type="button" id="search" name="search" value="查询" class="btn_search_someone" />
+				</p>
+				<p class="search">
+					<input type="button" id="search" name="search_all" class="btn_search_all" value="查询所有贷款" />
+				</p>
+          <!-- </div> -->
+            
+      
+        </div>
+      </div>
+ </section>
+    <section class="counts section-bg">
+      <div class="container">
+            <div id="show_loans" data-aos="fade-up">
+              <table id="loans_table" class="table table-striped">
+                
+              </table>
+            </div>
+      </div>
+    </section><!-- End Counts Section -->
+
+
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>ZQC</span></strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/mamba-one-page-bootstrap-template-free/ -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/vendor/jquery/jquery.min.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/jquery.easing/jquery.easing.min.js"></script>
+  <script src="/static/vendor/php-email-form/validate.js"></script>
+  <script src="/static/vendor/jquery-sticky/jquery.sticky.js"></script>
+  <script src="/static/vendor/venobox/venobox.min.js"></script>
+  <script src="/static/vendor/waypoints/jquery.waypoints.min.js"></script>
+  <script src="/static/vendor/counterup/counterup.min.js"></script>
+  <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/vendor/aos/aos.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>

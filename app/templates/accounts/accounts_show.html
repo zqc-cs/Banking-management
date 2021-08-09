@@ -1,0 +1,234 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USTC BANK</title>
+    <meta name="author" content="朱秋成">
+    <meta name="description" content="coder">
+    <!-- Open Graph -->
+    <meta property="og:title" content="zqc的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="/">
+    <meta property="og:description" content="coder">
+    <meta property="og:site_name" content="zqc的博客">
+    <link href="/static/icons/logo.svg" rel="icon">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_271755_rdxzzo2kqwk.css">
+    <link rel="stylesheet" href="/static/css/github-markdown.css">
+    <link rel="stylesheet" href="/static/css/prism.css">
+    <link rel="stylesheet" href="/static/css/share.min.css">
+    <link rel="stylesheet" href="/static/css/app.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+
+    <style type="text/css">
+        p:not(.add){
+            width: 200px;
+            height: 20px;
+            margin-top: 20px;
+        }
+        /*p清浮动*/
+        p{
+            /* overflow: hidden; */
+        }
+
+
+
+    </style>
+
+
+<script src="/static/js/jquery.js"></script>
+
+<script>
+  $(document).ready(function(){
+    $(".btn_cancel_bind").click(function(){
+        account_id = '{{ account[0] }}';
+        customer_id = $(this).siblings("input").val();
+        let type;
+        if ('{{ account[4] }}' != 'None') {
+            type = "储蓄账户";
+        } else {
+            type = "支票账户";
+        }
+        alert(type);
+      $.getJSON("{{ url_for('.accounts_cancel_bind') }}",{account_id:account_id, customer_id:customer_id, account_type:type},function(json, status, xhr) {
+          alert(json["err_msg"]);
+          location.reload();
+      });
+    });
+  });
+  
+</script>
+</head>
+
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+    <input id="nm-switch" type="hidden" value="true">
+    <div class="visible">
+        <header class="g-header headerDown" style="background-color:
+                transparent; box-shadow: none;">
+            <div class="g-logo" style="background:
+                    url(&quot;/static/icons/logo.svg&quot;) center center / 100%
+                    100% no-repeat;">
+                <a href="/"></a>
+            </div>
+            <i id="menu-toggle" class="iconfont icon-menu"></i>
+            <nav class="g-nav">
+                <ul>
+
+                    <li><a href="/" style="color: rgb(255, 255, 255);">home</a></li>
+                    <li><a href="/tags.html" style="color: rgb(255, 255,
+                                255);">tags</a></li>
+
+                </ul>
+            </nav>
+        </header>
+
+
+        <div class="g-banner home-banner banner-theme-default" data-theme="default" style="">
+            <h2>账户详情</h2>
+            <h3></h3>
+        </div>
+
+        <main class="g-container home-content">
+            <div class="article-list">
+                {% if row_customer != 0 %}
+                    <article class="article-item">
+                        <section class="post-preview" style="text-align: center;">
+                            <h1 class="post-title">客户情况</h2>
+                        </section>
+                    </article>
+                    {% for customer in customers %}
+                    <article class="article-item">
+                        <section class="post-preview" style="text-align: center;">
+                            <a class="post-link" href="/customers/customer_show?ID={{ customer[1] }}" title="查看客户"></a>
+                            <h2 class="post-title">{{ customer[0] }}</h2>
+                            <h3 class="post-subtitle">{{ customer[1] }}</h3>
+                        </section>
+                        <input type="text" class="customer_id" value="{{ customer[1] }}" hidden />
+                        <input style="width: 100px; height: 25px; float: right; border: hidden; background-color: rgb(63, 137, 236); color: rgb(255, 255, 255);" type="button" class="btn_cancel_bind" value="取消绑定" />
+                    </article>
+                    {% endfor %}
+                {% else %}
+                    <article class="article-item">
+                        <section class="post-preview" style="text-align: center;">
+                            <h2 class="post-title">账户暂时没有绑定客户</h2>
+                            <h3 class="post-subtitle"></h3>
+                        </section>
+                    </article>
+                {% endif %}
+
+                {% if row_loan != 0 %}
+                    <article class="article-item">
+                        <section class="post-preview" style="text-align: center;">
+                            <h1 class="post-title">贷款情况</h2>
+                        </section>
+                    </article>
+                    {% for loan in loans %}
+                    <article class="article-item">
+                        <section class="post-preview" style="text-align: center;">
+                            <a class="post-link" href="/loans/loans_show?ID={{ loan[2] }}&account_id={{ loan[1] }}" title="查看贷款"></a>
+                            <h2 class="post-title">{{ loan[2] }}</h2>
+                            <h3 class="post-subtitle">{{ loan[3] }}</h3>
+                            {% if loan[4] == 0 %}
+                                <h3 class="post-subtitle">未开始发放</h3>
+                            {% elif loan[4] == 1 %}
+                                <h3 class="post-subtitle">发放中</h3>
+                            {% else %}
+                                <h3 class="post-subtitle">发放完成</h3>
+                            {% endif %}
+                        </section>
+                    </article>
+                    {% endfor %}
+                {% else %}
+                    <article class="article-item">
+                        <section class="post-preview" style="text-align: center;">
+                            <h2 class="post-title">账户暂时没有贷款</h2>
+                            <h3 class="post-subtitle"></h3>
+                        </section>
+                    </article>
+                {% endif %}
+
+
+
+            </div>
+
+            <aside class="g-sidebar-wrapper">
+                <div class="g-sidebar">
+                    <section class="author-card">
+                        <div class="avatar">
+                            <img src="/static/img/hero.jpg" alt="">
+                        </div>
+                        <div class="container" style="text-align: left">
+                            <div class="author-name" rel="author">
+                                <p>
+                                    <label for="name">账户号：</label>
+                                    {{ account[0] }}
+                                </p>
+                            </div>
+                            <div class="author-name" rel="author">
+                                <p>
+                                    <label for="name">开户行：</label>
+                                    {{ account[1] }}
+                                </p>
+                            </div>
+                            <div class="author-name" rel="author">
+                                <p>
+                                    <label for="name">余额：</label>
+                                    {{ account[2] }}
+                                </p>
+                            </div>
+                            <div class="author-name" rel="author">
+                                <p>
+                                    <label for="name">开户日期：</label>
+                                    {{ account[3] }}
+                                </p>
+                            </div>
+                            {% if account[6] == None %}
+                                <div class="author-name" rel="author">
+                                    <p>
+                                        <label for="name">利率：</label>
+                                        {{ account[4] }}
+                                    </p>
+                                </div>
+                                <div class="author-name" rel="author">
+                                    <p>
+                                        <label for="name">货币类型：</label>
+                                        {{ account[5] }}
+                                    </p>
+                                </div>
+                            {% else %}
+                                <div class="author-name" rel="author">
+                                    <p>
+                                        <label for="name">透支额：</label>
+                                        {{ account[6] }}
+                                    </p>
+                                </div>
+                            {% endif %}
+                            <div class="bio">
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </aside>
+
+        </main>
+
+        <footer class="g-footer">
+            <section>USTC © 2021 - 2021
+            </section>
+            <section>Powered by <a href="">USTC BANK</a></section>
+        </footer>
+
+
+        </div>
+        <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+        <script src="/static/js/prism.js"></script>
+        <script src="/static/js/index.min.js"></script>
+
+
+</body>
+
+</html>

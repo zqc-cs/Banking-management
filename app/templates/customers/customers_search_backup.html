@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>用户管理</title>
+  <meta content="" name="descriptison">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/img/favicon.png" rel="icon">
+  <link href="/static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i,900" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendor/icofont/icofont.min.css" rel="stylesheet">
+  <link href="/static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/static/vendor/animate.css/animate.min.css" rel="stylesheet">
+  <link href="/static/vendor/venobox/venobox.css" rel="stylesheet">
+  <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/static/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Mamba - v2.0.1
+  * Template URL: https://bootstrapmade.com/mamba-one-page-bootstrap-template-free/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+
+
+  <style type="text/css">
+    form{
+        width: 425px;
+        margin-left: 425px;
+        font:14px bold Microsoft Yahei;
+    }
+    p:not(.search){
+        width: 425px;
+        height: 42px;
+    }
+    /*p清浮动*/
+    p{
+        overflow: hidden;
+    }
+    label:not(.nlabel){
+        float: left;
+        width: 85px;
+        height: 42px;
+        text-align: right;
+        margin-right: 10px;
+        line-height: 42px;
+        color: rgb(102, 102, 102);
+        font-weight: 700;
+    }
+    input:not(.special){
+        float: left;
+        width: 328px;
+        height: 42px;
+        padding: 11px 10px;
+        border: 1px solid silver;
+    }
+    a{
+        text-decoration: none;
+    }
+    .search{
+        width: 425px;
+        height: 50px;
+    }
+    #search{
+        width: 350px;
+        height: 50px;
+        margin-left: 75px;
+        background-color: rgb(63, 137, 236);
+        color: rgb(255, 255, 255);
+        border: none;
+    }
+ 
+
+
+</style>   
+<script src="/static/js/jquery.js"></script>
+
+<script>
+$(document).ready(function(){
+  $(".btn_search_all").click(function(){
+      $.get("{{url_for('.search_customers')}}",{search:"all"},function(data, status) {
+          alert(data);
+      })
+  })
+})
+</script>
+</head>
+
+<body>
+
+
+  <!-- ======= Header ======= -->
+  <header id="header">
+    <div class="container">
+
+      <div class="logo float-left">
+        <h1 class="text-light"><a href="#"><span>用户管理系统</span></a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="temp.html"><img src="/static/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav class="nav-menu float-right d-none d-lg-block">
+        <ul>
+          <li><a href="/">首页</a></li>
+          <li><a href="/customers">客户管理</a></li>
+          <li><a href="/accounts">账户管理</a></li>
+          <li><a href="/loans">贷款管理</a></li>
+          <li><a href="/works">业务统计</a></li>
+        </ul>
+      </nav><!-- .nav-menu -->
+
+    </div>
+      {% if show_windows == True %}
+        <script>
+            alert("{{ flash_msg }}")
+        </script>
+    {% endif %}
+  </header><!-- End Header -->
+
+   <!-- ======= Our Team Section ======= -->
+    <section id="team" class="team">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>查询、修改、删除客户</h2>
+        </div>
+
+        <div class="row">
+
+        </div>
+
+      </div>
+      </section>
+ <!-- ======= Counts Section ======= -->
+ <section class="counts section-bg">
+      <div style="width:100%;text-align:center">
+        <div data-aos="fade-up">
+          <form method="post" action="/customers/other_options">
+            <p>
+                <label for="name">客户身份证号</label>
+                <input type="text" name="ID" placeholder="请输入客户身份证号" autocomplete="off" />
+            </p>
+            <p>
+                <label for="name">客户姓名</label>
+                <input type="text" name="name" placeholder="请输入客户姓名" autocomplete="off" />
+            </p>
+            <p class="search">
+                <input type="submit" id="search" name="search" value="查询" class="special"/>
+            </p>
+        </form>
+        <form style="font:14px bold Microsoft Yahei" method="GET">
+          <p class="search">
+            <input type="submit" id="search" name="search_all" class="btn_search_all" value="查询所有客户" class="special"/>
+        </p>
+      </form>
+      <p class="search">
+        <input type="submit" id="search" name="search_all" class="btn_search_all" value="查询所有客户" class="special"/>
+      </p>
+        </div>
+      </div>
+ </section>
+    <section class="counts section-bg">
+      <div class="container">
+        {% if show_customers == True %}
+            <div id="show_customers" data-aos="fade-up">
+              <table class="table table-striped">
+                  <tr>
+                      <td>身份证号</td>
+                      <td>负责员工身份证号</td>
+                      <td>姓名</td>
+                      <td>电话</td>
+                      <td>住址</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                  </tr>
+              {% for customer in customers %}
+                  <tr>
+
+                    <td>{{ customer[0]}}</td>
+                    <td>{% if customer[1] %} {{ customer[1] }} {% else %} {% endif %} </td>
+                    <td>{{ customer[2] }}</td>
+                    <td>{{ customer[3] }}</td>
+                    <td>{{ customer[4] }}</td>
+                    <td style="border-color: #0be370">
+                        <div class="search" style="width: 50px">
+                            <form style="margin-left: 0px" method="post" action="{{ url_for('.customers_show', ID=customer[0]) }}">
+                            <input style="width: 50px; background-color: rgb(63, 137, 236); color: rgb(255, 255, 255);"  type="submit" name="show" value="查看">
+                        </form>
+                        </div>
+
+                    </td>
+                    <td style="border-color: #0be370">
+                        <div class="search" style="width: 50px">
+                            <form style="margin-left: 0px" method="post" action="{{ url_for('.customers_edit', ID=customer[0]) }}">
+                            <input style="width: 50px; background-color: rgb(63, 137, 236); color: rgb(255, 255, 255);"  type="submit" name="edit" value="编辑">
+                        </form>
+                        </div>
+
+                    </td>
+                    <td style="border-color: #0be370">
+                        <div class="search" style="width: 50px">
+                            <form style="margin-left: 0px" method="post" action="{{ url_for('.customers_delete', ID=customer[0]) }}">
+                            <input style="width: 50px; background-color: rgb(63, 137, 236); color: rgb(255, 255, 255);"  type="submit" name="delete" value="删除">
+                        </form>
+                        </div>
+
+                    </td>
+
+                  </tr>
+              {% endfor %}
+              </table>
+            </div>
+          {% endif %}
+      </div>
+    </section><!-- End Counts Section -->
+
+
+
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>ZQC</span></strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/mamba-one-page-bootstrap-template-free/ -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/vendor/jquery/jquery.min.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/jquery.easing/jquery.easing.min.js"></script>
+  <script src="/static/vendor/php-email-form/validate.js"></script>
+  <script src="/static/vendor/jquery-sticky/jquery.sticky.js"></script>
+  <script src="/static/vendor/venobox/venobox.min.js"></script>
+  <script src="/static/vendor/waypoints/jquery.waypoints.min.js"></script>
+  <script src="/static/vendor/counterup/counterup.min.js"></script>
+  <script src="/static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/vendor/aos/aos.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>

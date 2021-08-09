@@ -1,0 +1,45 @@
+form{
+    width: 425px;
+    font:14px bold "Microsoft Yahei";
+}
+p:not(.add){
+    width: 425px;
+    height: 42px;
+}
+/*p清浮动*/
+p{
+    overflow: hidden;
+}
+label:not(.nlabel){
+    float: right;
+    width: 65px;
+    height: 42px;
+    text-align: right;
+    margin-right: 10px;
+    line-height: 42px;
+    color: rgb(102, 102, 102);
+    font-weight: 700;
+}
+input:not(.special){
+    float: left;
+    width: 328px;
+    height: 16px;
+    padding: 11px 10px;
+    border: 1px solid silver;
+}
+a{
+    text-decoration: none;
+}
+.add{
+    width: 425px;
+    height: 50px;
+}
+#add{
+    width: 350px;
+    height: 50px;
+    margin-left: 75px;
+    background-color: rgb(63, 137, 236);
+    color: rgb(255, 255, 255);
+    border: none;
+}
+

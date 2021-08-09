@@ -1,0 +1,189 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加客户</title>
+    <meta name="author" content="朱秋成">
+    <meta name="description" content="coder">
+    <!-- Open Graph -->
+    <meta property="og:title" content="zqc的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="/">
+    <meta property="og:description" content="coder">
+    <meta property="og:site_name" content="zqc的博客">
+    <link href="/static/icons/logo.svg" rel="icon">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_271755_rdxzzo2kqwk.css">
+    <link rel="stylesheet" href="/static/css/github-markdown.css">
+    <link rel="stylesheet" href="/static/css/prism.css">
+    <link rel="stylesheet" href="/static/css/share.min.css">
+    <link rel="stylesheet" href="/static/css/app.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    
+    <style type="text/css">
+        form{
+            width: 425px;
+            font:14px bold "Microsoft Yahei";
+        }
+        p:not(.add){
+            width: 425px;
+            height: 42px;
+            margin-top: 20px;
+        }
+        /*p清浮动*/
+        p{
+            overflow: hidden;
+        }
+        label:not(.nlabel){
+            float: left;
+            width: 85px;
+            height: 42px;
+            text-align: right;
+            margin-right: 10px;
+            line-height: 42px;
+            color: rgb(102, 102, 102);
+            font-weight: 700;
+        }
+        input:not(.special){
+            float: left;
+            width: 328px;
+            height: 42px;
+            padding: 11px 10px;
+            border: 1px solid silver;
+        }
+        a{
+            text-decoration: none;
+        }
+        .add{
+            width: 425px;
+            margin-top: 20px;
+            height: 50px;
+        }
+        #add{
+            width: 350px;
+            height: 50px;
+            margin-left: 75px;
+            background-color: rgb(63, 137, 236);
+            color: rgb(255, 255, 255);
+            border: none;
+        }
+     
+
+
+    </style>  
+        <script>
+            alert("添加成功！")
+        </script>
+</head>
+
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+    <input id="nm-switch" type="hidden" value="true">
+    <div class="visible">
+        <header class="g-header headerDown" style="background-color:
+                transparent; box-shadow: none;">
+            <div class="g-logo" style="background:
+                    url(&quot;/static/icons/logo.svg&quot;) center center / 100%
+                    100% no-repeat;">
+                <a href="/"></a>
+            </div>
+            <i id="menu-toggle" class="iconfont icon-menu"></i>
+            <nav class="g-nav">
+                <ul>
+
+                    <li><a href="/" style="color: rgb(255, 255, 255);">home</a></li>
+                    <li><a href="/tags.html" style="color: rgb(255, 255,
+                                255);">tags</a></li>
+
+                </ul>
+            </nav>
+        </header>
+
+
+        <div class="g-banner home-banner banner-theme-default" data-theme="default" style="">
+            <h2>USTC BANK</h2>
+            <h3></h3>
+        </div>
+        
+        <main class="g-container home-content">
+            <div class="article-list">                    
+                <article class="article-item">
+                    <section class="post-preview">
+                        <form method="post" action="{{url_for('.add_customers')}}">
+                            <p>
+                                <label for="name">客户身份证号</label>
+                                <input type="text" name="ID" placeholder="请输入客户身份证号" autocomplete="off" required />
+                            </p>
+                            <p>
+                                <label for="name">客户姓名</label>
+                                <input type="text" name="name" placeholder="请输入客户姓名" autocomplete="off" required />
+                            </p>
+                            <p>
+                                <label for="name">客户电话号码</label>
+                                <input type="text" name="phone" placeholder="请输入客户手机号" autocomplete="off" required />
+                            </p>
+                            <p>
+                                <label for="name">客户地址</label>
+                                <input type="text" name="address" placeholder="请输入客户地址" autocomplete="off" required />
+                            </p>
+                            <p>
+                                <label for="name">联系人姓名</label>
+                                <input type="text" name="contact_name" placeholder="请输入联系人姓名" autocomplete="off" required />
+                            </p>
+                            <p>
+                                <label for="name">联系人手机号</label>
+                                <input type="text" name="contact_phone" placeholder="请输入联系人手机号" autocomplete="off" required />
+                            </p>
+                            <p>
+                                <label for="name">联系人Email</label>
+                                <input type="text" name="contact_mail" placeholder="请输入联系人邮箱" autocomplete="off" />
+                            </p>
+                            <p>
+                                <label for="name">联系人地址</label>
+                                <input type="text" name="contact_address" placeholder="请输入联系人地址" autocomplete="off" required />
+                            </p>
+                            <p class="add">
+                                <input type="submit" id="add" value="添加" class="special"/>
+                            </p>
+                        </form>
+                    </section>
+                </article>
+            </div>
+            <aside class="g-sidebar-wrapper">
+                <div class="g-sidebar">
+                    <section class="author-card">
+                        <div class="avatar">
+                            <img src="/static/img/hero.jpg" alt="">
+                        </div>
+                        <div class="author-name" rel="author">USTC</div>
+                        <div class="bio">
+                            <p></p>
+                        </div>
+                    </section>
+            </aside>
+
+        </main>
+
+        <footer class="g-footer">
+            <section>USTC © 2021 - 2021
+            </section>
+            <section>Powered by <a href="">USTC BANK</a></section>
+        </footer>
+
+
+        </div>
+        <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+        <script src="/static/js/prism.js"></script>
+        <script src="/static/js/index.min.js"></script>
+
+
+</body>
+<script>
+    function search() {
+
+    }
+</script>
+</html>
